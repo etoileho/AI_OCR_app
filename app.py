@@ -5,7 +5,6 @@ import io
 import matplotlib.pyplot as plt
 import numpy as np
 import fitz
-from wand.image import Image as WImage
 
 st.set_option("deprecation.showfileUploaderEncoding", False)
 
@@ -56,7 +55,10 @@ if text_and_coordinates:
     page = doc.load_page(selected_text['page'] - 1) # 0-based index
     pix = page.get_pixmap()
     img = np.frombuffer(pix.samples, np.uint8).reshape(pix.h, pix.w, pix.n)
-    
+
+    # RGBA to RGB
+    img = img[..., :3]
+
     # 選択されたテキストの座標に矩形を描画
     fig, ax = plt.subplots(1)
     ax.imshow(img)
